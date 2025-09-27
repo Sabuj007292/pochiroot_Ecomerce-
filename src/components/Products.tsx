@@ -1,4 +1,3 @@
-
 import { products } from "../lib/Product";
 import { ProductGrid } from "../pages/shop/Product-Gird";
 import SidebarFilters from "../pages/shop/Sidebar-Filters";
