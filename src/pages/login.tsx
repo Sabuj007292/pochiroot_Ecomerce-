@@ -1,16 +1,24 @@
+import React from "react";
+import { Link } from "react-router-dom";
 
-const LoginPage = () => {
+const LoginPage: React.FC = () => {
   return (
-    <main>
+    <main className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="w-full border-b bg-white sticky top-0 z-50">
+      <header className="w-full border-b bg-white sticky top-0 z-50 shadow-sm">
         <div className="mx-auto max-w-7xl px-4 py-4 flex justify-between items-center">
-          <a href="/" className="text-xl font-bold text-teal-700">
-            ClothCo
-          </a>
-          <nav className="space-x-4 text-sm">
-            <a href="/products" className="text-gray-600 hover:text-teal-700">Shop</a>
-            <a href="/register" className="text-gray-600 hover:text-teal-700">Register</a>
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-2">
+            <span className="text-2xl font-bold text-blue-600">PochiRoot</span>
+            <span className="hidden sm:inline text-xs text-gray-500 leading-4">
+              Explore <span className="text-yellow-500 font-semibold">Plus ✨</span>
+            </span>
+          </Link>
+
+          {/* Nav */}
+          <nav className="space-x-4 text-sm font-medium">
+            <Link to="/products" className="text-gray-600 hover:text-teal-700">Shop</Link>
+            <Link to="/register" className="text-gray-600 hover:text-teal-700">Register</Link>
           </nav>
         </div>
       </header>
@@ -57,12 +65,9 @@ const LoginPage = () => {
           {/* Footer */}
           <p className="text-center text-sm text-gray-500 mt-4">
             No account?{" "}
-            <a
-              href="/register"
-              className="text-teal-600 hover:underline"
-            >
+            <Link to="/register" className="text-teal-600 hover:underline">
               Create one
-            </a>
+            </Link>
           </p>
         </div>
       </section>
