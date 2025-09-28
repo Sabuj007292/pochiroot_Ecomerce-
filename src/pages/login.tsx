@@ -1,7 +1,43 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.message || "Login failed");
+        return;
+      }
+
+      // ✅ Save token to localStorage
+      localStorage.setItem("token", data.token);
+
+      toast.success("Login successful! 🎉");
+
+      // ✅ Redirect to products
+      navigate("/products");
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong!");
+    }
+  };
+
   return (
     <main className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -17,8 +53,12 @@ const LoginPage: React.FC = () => {
 
           {/* Nav */}
           <nav className="space-x-4 text-sm font-medium">
-            <Link to="/products" className="text-gray-600 hover:text-teal-700">Shop</Link>
-            <Link to="/register" className="text-gray-600 hover:text-teal-700">Register</Link>
+            <Link to="/products" className="text-gray-600 hover:text-teal-700">
+              Shop
+            </Link>
+            <Link to="/register" className="text-gray-600 hover:text-teal-700">
+              Register
+            </Link>
           </nav>
         </div>
       </header>
@@ -28,27 +68,35 @@ const LoginPage: React.FC = () => {
         <div className="border rounded-lg shadow-sm p-6 bg-white">
           <h2 className="text-xl font-semibold mb-6">Sign in</h2>
 
-          <form className="grid gap-4">
+          <form className="grid gap-4" onSubmit={handleSubmit}>
             {/* Email */}
             <div className="grid gap-2">
-              <label htmlFor="email" className="text-sm font-medium text-gray-700">Email</label>
+              <label htmlFor="email" className="text-sm font-medium text-gray-700">
+                Email
+              </label>
               <input
                 id="email"
                 type="email"
                 autoComplete="email"
                 placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full rounded-md border px-3 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
             </div>
 
             {/* Password */}
             <div className="grid gap-2">
-              <label htmlFor="password" className="text-sm font-medium text-gray-700">Password</label>
+              <label htmlFor="password" className="text-sm font-medium text-gray-700">
+                Password
+              </label>
               <input
                 id="password"
                 type="password"
                 autoComplete="current-password"
                 placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full rounded-md border px-3 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
             </div>
