@@ -99,7 +99,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, User, ShoppingBag } from 'lucide-react';
 
 const RegisterPage: React.FC = () => {
     const [name, setName] = useState("");
@@ -141,13 +141,13 @@ const RegisterPage: React.FC = () => {
         <main className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-blue-50 flex items-center justify-center px-4 py-8">
             <div className="w-full max-w-md">
                 {/* Logo/Brand Section */}
-                {/* <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl mb-4 shadow-lg">
+                <div className="text-center mb-8">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl shadow-lg">
                         <ShoppingBag className="w-8 h-8 text-white" />
                     </div>
                     <h1 className="text-3xl font-bold text-gray-900">Create Account</h1>
                     <p className="text-gray-600 mt-2">Join us and start your journey</p>
-                </div> */}
+                </div>
 
                 {/* Register Card */}
                 <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">

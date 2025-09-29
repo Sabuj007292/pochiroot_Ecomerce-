@@ -278,14 +278,15 @@ const LoginPage = () => {
     };
 
     return (
-        <main className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-blue-50 flex items-center justify-center px-4 py-8">
+        <main className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-blue-50 flex items-center justify-center px-4">
             <div className="w-full max-w-md">
                 {/* Logo/Brand Section */}
                 <div className="text-center mb-8">
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl shadow-lg">
                         <ShoppingBag className="w-8 h-8 text-white" />
                     </div>
-                    <p className="text-gray-600 mt-2">Sign in to access your account and continue shopping</p>
+                    <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
+                    <p className="text-gray-600 mt-2"><strong>Sign</strong> in to access your account and continue shopping</p>
                 </div>
                 {/* <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl mb-4 shadow-lg">
