@@ -1,12 +1,14 @@
 import { products } from "../lib/Product";
 import { ProductGrid } from "../pages/shop/Product-Gird";
 import SidebarFilters from "../pages/shop/Sidebar-Filters";
+// import Navbar from "./navbar";
 import Header from "./Header";
 
 const ProductsPage = () => {
   return (
     <main>
       <Header />
+        {/* <Navbar /> */}
       <section className="mx-auto max-w-7xl px-4 py-8 md:px-6">
         <div className="mb-4">
           <h1 className="text-2xl font-semibold text-gray-900">All Products</h1>
