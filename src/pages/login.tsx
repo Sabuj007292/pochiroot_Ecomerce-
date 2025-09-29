@@ -159,7 +159,7 @@
 //       toast.error("Something went wrong!");
 //     }
 //   };
-  
+
 //   return (
 //     <main className="min-h-screen bg-gray-50">
 //       <header className="w-full border-b bg-white sticky top-0 z-50 shadow-sm">
@@ -236,52 +236,58 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
-import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ShoppingBag } from 'lucide-react';
 // import Header from "../components/Header";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const { setUser } = useAuth();
-  const [showPassword, setShowPassword] = useState(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const { setUser } = useAuth();
+    const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
 
-    try {
-      const res = await fetch("https://pochiroot-ecomerce-backend.vercel.app/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+        try {
+            const res = await fetch("https://pochiroot-ecomerce-backend.vercel.app/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            });
 
-      const data = await res.json();
+            const data = await res.json();
 
-      if (!res.ok) {
-        toast.error(data.message || "Login failed");
-        return;
-      }
+            if (!res.ok) {
+                toast.error(data.message || "Login failed");
+                return;
+            }
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      setUser(data.user); // 👈 update context
-      toast.success("Login successful!");
-      navigate("/products");
-    } catch (err) {
-      toast.error("Something went wrong!");
-    } finally {
-      setLoading(false);
-    }
-  };
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("user", JSON.stringify(data.user));
+            setUser(data.user); // 👈 update context
+            toast.success("Login successful!");
+            navigate("/products");
+        } catch (err) {
+            toast.error("Something went wrong!");
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  return (
-    <main className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-blue-50 flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-md">
-        {/* Logo/Brand Section */}
-        {/* <div className="text-center mb-8">
+    return (
+        <main className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-blue-50 flex items-center justify-center px-4 py-8">
+            <div className="w-full max-w-md">
+                {/* Logo/Brand Section */}
+                <div className="text-center mb-8">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl shadow-lg">
+                        <ShoppingBag className="w-8 h-8 text-white" />
+                    </div>
+                    <p className="text-gray-600 mt-2">Sign in to access your account and continue shopping</p>
+                </div>
+                {/* <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl mb-4 shadow-lg">
             <Lock className="w-8 h-8 text-white" />
           </div>
@@ -289,101 +295,100 @@ const LoginPage = () => {
           <p className="text-gray-600 mt-2">Sign in to continue to your account</p>
         </div> */}
 
-        {/* Login Card */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
-          <div className="space-y-5">
-            {/* Email Field */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all outline-none"
-                />
-              </div>
-            </div>
+                {/* Login Card */}
+                <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+                    <div className="space-y-5">
+                        {/* Email Field */}
+                        <div>
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                                Email Address
+                            </label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <Mail className="h-5 w-5 text-gray-400" />
+                                </div>
+                                <input
+                                    id="email"
+                                    type="email"
+                                    placeholder="you@example.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all outline-none"
+                                />
+                            </div>
+                        </div>
 
-            {/* Password Field */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all outline-none"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                  )}
-                </button>
-              </div>
-            </div>
+                        {/* Password Field */}
+                        <div>
+                            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                                Password
+                            </label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <Lock className="h-5 w-5 text-gray-400" />
+                                </div>
+                                <input
+                                    id="password"
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder="Enter your password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all outline-none"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                                >
+                                    {showPassword ? (
+                                        <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                                    ) : (
+                                        <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                                    )}
+                                </button>
+                            </div>
+                        </div>
 
-            {/* Remember Me & Forgot Password */}
-            <div className="flex items-center justify-between">
-              <label className="flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
-                />
-                <span className="ml-2 text-sm text-gray-600">Remember me</span>
-              </label>
-              <a href="#" className="text-sm font-medium text-teal-600 hover:text-teal-700">
-                Forgot password?
-              </a>
-            </div>
+                        {/* Remember Me & Forgot Password */}
+                        <div className="flex items-center justify-between">
+                            <label className="flex items-center cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
+                                />
+                                <span className="ml-2 text-sm text-gray-600">Remember me</span>
+                            </label>
+                            <a href="#" className="text-sm font-medium text-teal-600 hover:text-teal-700">
+                                Forgot password?
+                            </a>
+                        </div>
 
-            {/* Submit Button */}
-            <button
-              type="button"
-              onClick={handleSubmit}
-              disabled={loading}
-              className={`w-full py-3 px-4 rounded-lg font-semibold text-white transition-all duration-200 cursor-pointer ${
-                loading
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-              }`}
-            >
-              {loading ? (
-                <span className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Signing in...
-                </span>
-              ) : (
-                "Sign in"
-              )}
-            </button>
-          </div>
+                        {/* Submit Button */}
+                        <button
+                            type="button"
+                            onClick={handleSubmit}
+                            disabled={loading}
+                            className={`w-full py-3 px-4 rounded-lg font-semibold text-white transition-all duration-200 cursor-pointer ${loading
+                                ? "bg-gray-400 cursor-not-allowed"
+                                : "bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                                }`}
+                        >
+                            {loading ? (
+                                <span className="flex items-center justify-center">
+                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Signing in...
+                                </span>
+                            ) : (
+                                "Sign in"
+                            )}
+                        </button>
+                    </div>
 
-          {/* Divider */}
-          {/* <div className="relative my-6">
+                    {/* Divider */}
+                    {/* <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-300"></div>
             </div>
@@ -392,8 +397,8 @@ const LoginPage = () => {
             </div>
           </div> */}
 
-          {/* Social Login Buttons */}
-          {/* <div className="grid grid-cols-2 gap-3">
+                    {/* Social Login Buttons */}
+                    {/* <div className="grid grid-cols-2 gap-3">
             <button className="flex items-center justify-center px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -411,25 +416,25 @@ const LoginPage = () => {
             </button>
           </div> */}
 
-          {/* Sign Up Link */}
-          <p className="text-center text-sm text-gray-600 mt-6">
-            Don't have an account?{" "}
-            <Link to="/register" className="font-medium text-teal-600 hover:text-teal-700">
-              Sign up for free
-            </Link>
-          </p>
-        </div>
+                    {/* Sign Up Link */}
+                    <p className="text-center text-sm text-gray-600 mt-6">
+                        Don't have an account?{" "}
+                        <Link to="/register" className="font-medium text-teal-600 hover:text-teal-700">
+                            Sign up for free
+                        </Link>
+                    </p>
+                </div>
 
-        {/* Footer */}
-        <p className="text-center text-xs text-gray-500 mt-6">
-          By continuing, you agree to our{" "}
-          <a href="#" className="underline hover:text-gray-700">Terms of Service</a>
-          {" "}and{" "}
-          <a href="#" className="underline hover:text-gray-700">Privacy Policy</a>
-        </p>
-      </div>
-    </main>
-  );
+                {/* Footer */}
+                <p className="text-center text-xs text-gray-500 mt-6">
+                    By continuing, you agree to our{" "}
+                    <a href="#" className="underline hover:text-gray-700">Terms of Service</a>
+                    {" "}and{" "}
+                    <a href="#" className="underline hover:text-gray-700">Privacy Policy</a>
+                </p>
+            </div>
+        </main>
+    );
 };
 
 export default LoginPage;
