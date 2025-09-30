@@ -8,8 +8,8 @@ const Navbar: React.FC = () => {
   const [, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white border-b shadow-sm sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+    <nav className="bg-white shadow-sm sticky top-0 z-50 px-4 py-3">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="text-2xl font-bold text-blue-600">
           PochiRoot

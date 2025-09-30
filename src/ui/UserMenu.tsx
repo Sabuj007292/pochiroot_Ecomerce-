@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaUser, FaChevronDown, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; // adjust path if needed
 
 const UserMenu: React.FC = () => {
@@ -48,7 +48,7 @@ const UserMenu: React.FC = () => {
 
       {/* Dropdown */}
       <div
-        className={`absolute right-0 mt-2 w-56 rounded-md border border-gray-200 bg-white shadow-md z-50 transform transition-all duration-200 ease-out origin-top ${
+        className={`absolute mt-1 w-56 rounded-md border border-gray-200 bg-white shadow-md z-50 transform transition-all duration-200 ease-out origin-top ${
           open ? "opacity-100 scale-100 visible" : "opacity-0 scale-95 invisible"
         }`}
       >
@@ -85,9 +85,15 @@ const UserMenu: React.FC = () => {
           ) : (
             <>
               <li>
-                <a href="/profile" className="block px-4 py-2 hover:bg-gray-100">
+                {/* <a href="/profile" className="block px-4 py-2 hover:bg-gray-100">
                   Profile
-                </a>
+                </a> */}
+                <Link
+                  to="/profile"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                >
+                  Profile
+                </Link>
               </li>
               <li>
                 <a href="/orders" className="block px-4 py-2 hover:bg-gray-100">
