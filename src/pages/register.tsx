@@ -100,7 +100,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Mail, Lock, Eye, EyeOff, User, Phone, LocateIcon } from 'lucide-react';
-import Navbar from "../components/navbar";
+import Navbar from "../components/Navbar";
 
 const RegisterPage: React.FC = () => {
     const [name, setName] = useState("");
