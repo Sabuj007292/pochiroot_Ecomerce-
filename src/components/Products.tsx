@@ -30,8 +30,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import SidebarFilters from "../pages/shop/Sidebar-Filters";
 import { ProductGrid } from "../pages/shop/Product-Gird";
-import type { Product } from "../pages/shop/Product-Card";
 import Header from "./Header";
+import type { Product } from "../pages/shop/Product-Card";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);

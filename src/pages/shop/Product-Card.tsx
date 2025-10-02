@@ -11,51 +11,51 @@ export type Product = {
   discount?: number
 }
 
-export function ProductCard({ product }: { product: Product }) {
-  const { title, subtitle, price, discountedPrice, discount, imageAlt, imageUrl, imageWidth = 480, imageHeight = 320 } = product;
+// export function ProductCard({ product }: { product: Product }) {
+//   const { title, subtitle, price, discountedPrice, discount, imageAlt, imageUrl, imageWidth = 480, imageHeight = 320 } = product;
 
-  return (
-    <div className="card overflow-hidden border rounded-md shadow-sm">
-      <div className="card-header p-0">
-        <img
-          src={imageUrl || "/placeholder.svg?height=320&width=480&query=clothing product image"}
-          alt={imageAlt}
-          width={imageWidth}
-          height={imageHeight}
-          className="h-60 w-full object-fill"
-        />
-      </div>
-      <div className="card-content p-4">
-        <h3 className="text-sm font-medium leading-6 text-gray-900">{title}</h3>
-        <small className="text-xs text-gray-500">{subtitle} </small>
-        {/* <p className="mt-1 text-base font-semibold">Rs.{discountedPrice}</p> */}
-        <div className="text-sm text-gray-800 space-y-1">
-          <div className="text-xl font-semibold text-gray-900">
-            ₹{discountedPrice}
-            <span className="ml-2 text-green-600 font-medium text-sm">{discount}% OFF</span>
-          </div>
+//   return (
+//     <div className="card overflow-hidden border rounded-md shadow-sm">
+//       <div className="card-header p-0">
+//         <img
+//           src={imageUrl || "/placeholder.svg?height=320&width=480&query=clothing product image"}
+//           alt={imageAlt}
+//           width={imageWidth}
+//           height={imageHeight}
+//           className="h-60 w-full object-fill"
+//         />
+//       </div>
+//       <div className="card-content p-4">
+//         <h3 className="text-sm font-medium leading-6 text-gray-900">{title}</h3>
+//         <small className="text-xs text-gray-500">{subtitle} </small>
+//         {/* <p className="mt-1 text-base font-semibold">Rs.{discountedPrice}</p> */}
+//         <div className="text-sm text-gray-800 space-y-1">
+//           <div className="text-xl font-semibold text-gray-900">
+//             ₹{discountedPrice}
+//             <span className="ml-2 text-green-600 font-medium text-sm">{discount}% OFF</span>
+//           </div>
 
-          {/* MRP */}
-          <div className="text-gray-500 text-sm">
-            MRP: <span className="line-through">₹{price}</span>
-          </div>
+//           {/* MRP */}
+//           <div className="text-gray-500 text-sm">
+//             MRP: <span className="line-through">₹{price}</span>
+//           </div>
 
-          {/* Tax info */}
-          <div className="text-xs text-gray-400">
-            (Incl. of all taxes)
-          </div>
-        </div>
+//           {/* Tax info */}
+//           <div className="text-xs text-gray-400">
+//             (Incl. of all taxes)
+//           </div>
+//         </div>
 
 
-      </div>
-      <div className="card-footer flex items-center gap-2 p-4 pt-0">
-        <button className="mt-4 w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 cursor-pointer">
-          Add to cart
-        </button>
-      </div>
-    </div>
-  );
-}
+//       </div>
+//       <div className="card-footer flex items-center gap-2 p-4 pt-0">
+//         <button className="mt-4 w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 cursor-pointer">
+//           Add to cart
+//         </button>
+//       </div>
+//     </div>
+//   );
+// }
 
 
 // export type Product = {
@@ -95,3 +95,84 @@ export function ProductCard({ product }: { product: Product }) {
 //     </div>
 //   );
 // }
+
+export function ProductCard({ product }: { product: Product }) {
+  const { id, title, subtitle, price, discountedPrice, discount, imageAlt, imageUrl, imageWidth = 480, imageHeight = 320 } = product;
+
+  // Add to cart handler
+  const handleAddToCart = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch("http://localhost:3000/api/users/cart/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          productId: id,
+          quantity: 1,
+          name: title,
+          subtitle,
+          price,
+          discountedPrice,
+          discount,
+          image: imageUrl,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("✅ Added to cart!");
+        console.log("Cart response:", data);
+      } else {
+        alert(`❌ Failed: ${data.message}`);
+      }
+    } catch (err) {
+      console.error("Add to cart error:", err);
+      alert("Something went wrong");
+    }
+  };
+
+  return (
+    <div className="card overflow-hidden border rounded-md shadow-sm">
+      <div className="card-header p-0">
+        <img
+          src={imageUrl || "/placeholder.svg?height=320&width=480&query=clothing product image"}
+          alt={imageAlt}
+          width={imageWidth}
+          height={imageHeight}
+          className="h-60 w-full object-fill"
+        />
+      </div>
+      <div className="card-content p-4">
+        <h3 className="text-sm font-medium leading-6 text-gray-900">{title}</h3>
+        <small className="text-xs text-gray-500">{subtitle}</small>
+
+        <div className="text-sm text-gray-800 space-y-1">
+          <div className="text-xl font-semibold text-gray-900">
+            ₹{discountedPrice}
+            {discount && <span className="ml-2 text-green-600 font-medium text-sm">{discount}% OFF</span>}
+          </div>
+
+          <div className="text-gray-500 text-sm">
+            MRP: <span className="line-through">₹{price}</span>
+          </div>
+
+          <div className="text-xs text-gray-400">(Incl. of all taxes)</div>
+        </div>
+      </div>
+
+      <div className="card-footer flex items-center gap-2 p-4 pt-0">
+        <button
+          onClick={handleAddToCart}
+          className="mt-4 w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 cursor-pointer"
+        >
+          Add to cart
+        </button>
+      </div>
+    </div>
+  );
+}

@@ -6,6 +6,11 @@ import ProductsPage from "./components/Products";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext";
 import ProfilePage from "./components/Profile";
+import CartPage from "./pages/cart/CartPage";
+import CheckoutPage from "./pages/cart/CheckOutPage";
+import OrderConfirmation from "./pages/cart/OrderConfirmPage";
+import MyOrders from "./pages/cart/OrderListPage";
+import ProductDetails from "./pages/cart/ProductDetails";
 
 function App() {
   return (
@@ -20,7 +25,13 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/products" element={<ProductsPage />} />
-          <Route path="*" element={<ProfilePage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/order-confirmation" element={<OrderConfirmation />} />
+          <Route path="/orders" element={<MyOrders />} />
+          <Route path="product-details" element={<ProductDetails />} />
+
         </Routes>
       </Router>
     </AuthProvider>
