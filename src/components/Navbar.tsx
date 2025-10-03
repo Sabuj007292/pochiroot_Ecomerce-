@@ -1,52 +1,119 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { ShoppingCart } from "lucide-react";
-import { FaBars } from "react-icons/fa";
-import UserMenu from "../ui/UserMenu";
+import { Menu, Search, User, Heart, ShoppingCart } from 'lucide-react';
 
-const Navbar: React.FC = () => {
-  const [, setMobileMenuOpen] = useState(false);
-
+const Header = () => {
   return (
-    <nav className="bg-white shadow-sm sticky top-0 z-50 px-4 py-3">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-blue-600">
-          PochiRoot
-        </Link>
-
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-6">
-          <Link to="/products" className="text-gray-600 hover:text-teal-700">
-            Shop
-          </Link>
-
-          {/* ✅ User dropdown here */}
-          <UserMenu />
-
-          {/* Cart */}
-          <div className="flex items-center gap-1 cursor-pointer rounded-md border px-2 py-1 hover:bg-gray-100">
-            <ShoppingCart className="h-5 w-5" />
-            <span className="text-sm">Cart</span>
-            <span className="rounded bg-teal-600 px-1 text-xs text-white">0</span>
-          </div>
-        </div>
-
-        {/* Mobile Menu Toggle Button */}
-        <div className="md:hidden">
-          <button
-            onClick={() => setMobileMenuOpen((prev) => !prev)}
-            aria-label="Toggle menu"
-            className="text-gray-600 text-xl"
-          >
-            <FaBars />
-          </button>
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur">
+      {/* Top Banner */}
+      <div className="bg-blue-600 text-white">
+        <div className="mx-auto max-w-7xl px-4 py-2 text-center text-sm font-medium">
+          Spring Sale: Up to 50% off on selected items! Free shipping on orders over $50
         </div>
       </div>
 
-      {/* Optional: Mobile menu content can go here */}
-    </nav>
+      {/* Main Header */}
+      <div className="mx-auto max-w-7xl px-4 py-4">
+        <div className="flex items-center justify-between gap-4">
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <button className="md:hidden p-2 hover:bg-gray-100 rounded-md">
+              <Menu className="h-5 w-5" />
+            </button>
+            <a href="/" className="text-2xl font-bold tracking-tight">
+              PochiRoot
+            </a>
+          </div>
+
+          {/* Search Bar */}
+          <div className="hidden flex-1 max-w-2xl md:block">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <input
+                type="search"
+                placeholder="Search for products, brands and more..."
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center gap-2">
+            <button className="hidden md:inline-flex p-2 hover:bg-gray-100 rounded-md">
+              <User className="h-5 w-5" />
+            </button>
+            <button className="hidden md:inline-flex p-2 hover:bg-gray-100 rounded-md">
+              <Heart className="h-5 w-5" />
+            </button>
+            <button className="p-2 hover:bg-gray-100 rounded-md relative">
+              <ShoppingCart className="h-5 w-5" />
+              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
+                3
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Search */}
+        <div className="mt-3 md:hidden">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <input 
+              type="search" 
+              placeholder="Search products..." 
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <nav className="border-t border-gray-200">
+        <div className="mx-auto max-w-7xl px-4">
+          <ul className="flex items-center gap-6 overflow-x-auto py-3 text-sm font-medium">
+            <li>
+              <a href="#" className="whitespace-nowrap hover:text-blue-600 transition-colors">
+                New Arrivals
+              </a>
+            </li>
+            <li>
+              <a href="#" className="whitespace-nowrap hover:text-blue-600 transition-colors">
+                Men
+              </a>
+            </li>
+            <li>
+              <a href="#" className="whitespace-nowrap hover:text-blue-600 transition-colors">
+                Women
+              </a>
+            </li>
+            <li>
+              <a href="#" className="whitespace-nowrap hover:text-blue-600 transition-colors">
+                Kids
+              </a>
+            </li>
+            <li>
+              <a href="#" className="whitespace-nowrap hover:text-blue-600 transition-colors">
+                Electronics
+              </a>
+            </li>
+            <li>
+              <a href="#" className="whitespace-nowrap hover:text-blue-600 transition-colors">
+                Home & Living
+              </a>
+            </li>
+            <li>
+              <a href="#" className="whitespace-nowrap hover:text-blue-600 transition-colors">
+                Beauty
+              </a>
+            </li>
+            <li>
+              <a href="#" className="whitespace-nowrap text-blue-600 font-semibold">
+                Sale
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
   );
 };
 
-export default Navbar;
+export default Header;
