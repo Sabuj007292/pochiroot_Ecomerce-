@@ -145,7 +145,7 @@ const FeaturedProducts: React.FC = () => {
                   {/* Badge */}
                   {product.badge && (
                     <div
-                      className={`absolute left-3 top-3 ${product.badgeColor} rounded-lg px-3 py-1.5 text-xs font-bold text-white shadow-lg backdrop-blur-sm`}
+                      className={`absolute left-3 top-3 ₹{product.badgeColor} rounded-lg px-3 py-1.5 text-xs font-bold text-white shadow-lg backdrop-blur-sm`}
                     >
                       {product.badge}
                     </div>
@@ -209,10 +209,10 @@ const FeaturedProducts: React.FC = () => {
                   {/* Price */}
                   <div className="mt-auto flex items-baseline gap-2">
                     <span className="text-xl font-bold text-gray-900">
-                      ${product.price}
+                      ₹{product.price}
                     </span>
                     <span className="text-sm text-gray-400 line-through">
-                      ${product.originalPrice}
+                      ₹{product.originalPrice}
                     </span>
                   </div>
                 </div>

@@ -2,11 +2,11 @@ import { Menu, Search, User, Heart, ShoppingCart } from 'lucide-react';
 
 const Header = () => {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/75 backdrop-blur">
       {/* Top Banner */}
       <div className="bg-blue-600 text-white">
         <div className="mx-auto max-w-7xl px-4 py-2 text-center text-sm font-medium">
-          Spring Sale: Up to 50% off on selected items! Free shipping on orders over $50
+          Spring Sale: Up to 50% off on selected items! Free shipping on orders over ₹1000
         </div>
       </div>
 
