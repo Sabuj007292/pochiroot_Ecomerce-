@@ -6,7 +6,8 @@ import Navbar from "./Navbar";
 import CategoryGrid from "./CategoryGrid";
 import FeaturedProducts from "./FeaturedProducts";
 import DealsBanner from "./DealsBanner";
-import Footer from "./footer";
+import Footer from "./Footer";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
  
@@ -73,10 +74,12 @@ const HeroSection = () => {
               in every piece.
             </p>
             <div className="flex flex-wrap items-center gap-4">
-              <button className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors">
+              <Link to="/products">
+              <button className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors cursor-pointer">
                 Shop Now
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4 animate-pulse text-white-600" />
               </button>
+              </Link>
               <button className="px-6 py-3 bg-white border border-gray-300 text-gray-900 font-medium rounded-md hover:bg-gray-50 transition-colors">
                 Explore Collections
               </button>

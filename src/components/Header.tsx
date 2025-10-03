@@ -71,57 +71,42 @@
 // };
 
 // export default Header;
-
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaSearch, FaStore, FaEllipsisV, FaBars } from "react-icons/fa";
 import { ShoppingCart } from "lucide-react";
 import LoginMenu from "../ui/LoginMenu";
 import UserMenu from "../ui/UserMenu";
 import { useAuth } from "../context/AuthContext";
-import axios from "axios";
+import { useCart } from "../context/CartContext";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
-  const { user, token } = useAuth(); // AuthContext should provide user & token
+  const { user } = useAuth();
+  const { numberOfItems } = useCart(); // 🛒 global cart count
+  const navigate = useNavigate();
+  const { fetchCartCount } = useCart();
 
-  // Fetch cart items and calculate total quantity
-  useEffect(() => {
-    const fetchCartCount = async () => {
-      if (!user || !token) return;
-
-      try {
-        const response = await axios.get("http://localhost:3000/api/users/cart", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        // Ensure response contains cart items
-        const cartItems = response.data.cart?.items || [];
-        const totalQuantity = cartItems.reduce(
-          (sum: number, item: any) => sum + (item.quantity || 0),
-          0
-        );
-
-        setCartCount(totalQuantity);
-      } catch (error) {
-        console.error("Error fetching cart count:", error);
-        setCartCount(0);
-      }
-    };
-
-    fetchCartCount();
-  }, [user, token]);
+  const handleLogoClick = async () => {
+    try {
+      await fetchCartCount(); // 👈 Call API before navigation
+      navigate("/");          // 👈 Then go to homepage
+    } catch (err) {
+      console.error("Error updating cart count:", err);
+      navigate("/"); // still navigate even if fetch fails
+    }
+  };
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50 px-4 py-3">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-blue-600">
+        <button
+          onClick={handleLogoClick}
+          className="text-2xl font-bold text-blue-600"
+        >
           PochiRoot
-        </Link>
+        </button>
 
         {/* Search bar */}
         <div className="hidden md:flex flex-grow mx-6">
@@ -141,15 +126,15 @@ const Header = () => {
 
           {/* Cart Button with Badge */}
           <Link to="/cart">
-          <div className="relative inline-flex items-center gap-2 cursor-pointer rounded-md border px-3 py-2 hover:bg-gray-100">
-            <ShoppingCart className="h-5 w-5" />
-            <span>Cart</span>
-            {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                {cartCount}
-              </span>
-            )}
-          </div>
+            <div className="relative inline-flex items-center gap-2 cursor-pointer rounded-md border px-3 py-2 hover:bg-gray-100">
+              <ShoppingCart className="h-5 w-5" />
+              <span>Cart</span>
+              {numberOfItems > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                  {numberOfItems}
+                </span>
+              )}
+            </div>
           </Link>
 
           {/* Become a Seller */}

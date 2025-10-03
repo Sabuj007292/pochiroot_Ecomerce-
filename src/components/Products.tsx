@@ -26,7 +26,7 @@
 // };
 
 // export default ProductsPage;
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import SidebarFilters from "../pages/shop/Sidebar-Filters";
 import { ProductGrid } from "../pages/shop/Product-Gird";
@@ -36,8 +36,11 @@ import type { Product } from "../pages/shop/Product-Card";
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const hasFetched = useRef(false);
 
   useEffect(() => {
+     if (hasFetched.current) return; // skip second call
+    hasFetched.current = true;
     const fetchProducts = async () => {
       try {
         const res = await axios.get("http://localhost:3000/api/admin/products/all");

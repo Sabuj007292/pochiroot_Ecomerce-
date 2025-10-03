@@ -11,29 +11,51 @@ import CheckoutPage from "./pages/cart/CheckOutPage";
 import OrderConfirmation from "./pages/cart/OrderConfirmPage";
 import MyOrders from "./pages/cart/OrderListPage";
 import ProductDetails from "./pages/cart/ProductDetails";
+import { CartProvider } from "./context/CartContext";
+import MasterLayout from "./components/MasterPage";
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        {/* 🔔 Toast Notifications */}
-        <Toaster position="top-right" reverseOrder={false} />
+      <CartProvider>
+        <Router>
+          {/* 🔔 Toast Notifications */}
+          <Toaster position="top-right" reverseOrder={false} />
 
-        {/* 🔀 Routes */}
-        <Routes>
-          <Route path="/" element={<HeroSection />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/order-confirmation" element={<OrderConfirmation />} />
-          <Route path="/orders" element={<MyOrders />} />
-          <Route path="product-details" element={<ProductDetails />} />
+          {/* 🔀 Routes */}
+          <Routes>
+            <Route path="/" element={<HeroSection />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            {/* <Route path="/cart" element={<CartPage />} /> */}
+            <Route
+              path="/cart"
+              element={
+                <MasterLayout>
+                  <CartPage />
+                </MasterLayout>
+              }
+            />
+            {/* <Route path="/checkout" element={<CheckoutPage />} /> */}
+            <Route
+              path="/checkout"
+              element={
+                <MasterLayout>
+                  <CheckoutPage />
+                </MasterLayout>
+              }
+            />
+            {/* <Route path="/order-confirmation" element={<OrderConfirmation />} /> */
+              }
+            <Route path="/order-confirmation" element={<OrderConfirmation />} />
+            <Route path="/orders" element={<MyOrders />} />
+            <Route path="product-details" element={<ProductDetails />} />
 
-        </Routes>
-      </Router>
+          </Routes>
+        </Router>
+      </CartProvider>
     </AuthProvider>
   );
 }
