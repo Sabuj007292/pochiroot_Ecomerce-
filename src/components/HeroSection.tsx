@@ -6,8 +6,8 @@ import Navbar from "./Navbar";
 import CategoryGrid from "./CategoryGrid";
 import FeaturedProducts from "./FeaturedProducts";
 import DealsBanner from "./DealsBanner";
-import Footer from "./Footer";
 import { Link } from "react-router-dom";
+import Footer from "./Footer";
 
 const HeroSection = () => {
  

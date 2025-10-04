@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Youtube, Instagram } from "lucide-react";
 
-export default function Footer() {
+export default function AfterLoginFooter() {
   return (
     <footer className="bg-gray-900 text-gray-300 mt-10">
       {/* Top Section */}
