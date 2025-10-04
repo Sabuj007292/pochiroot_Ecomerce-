@@ -1,6 +1,6 @@
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 
-export default function Footer() {
+export default function FooterSection() {
   return (
     <footer className="border-t border-gray-200 bg-gray-50">
       {/* Newsletter */}
