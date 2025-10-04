@@ -7,7 +7,6 @@ import CategoryGrid from "./CategoryGrid";
 import FeaturedProducts from "./FeaturedProducts";
 import DealsBanner from "./DealsBanner";
 import { Link } from "react-router-dom";
-import Footer from "./Footer";
 
 const HeroSection = () => {
  
@@ -100,7 +99,7 @@ const HeroSection = () => {
     <CategoryGrid />
     <FeaturedProducts />
     <DealsBanner />
-    <Footer />
+    {/* <Footer /> */}
     </>
   )
 };
