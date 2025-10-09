@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Header from "../../components/Header";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
@@ -58,7 +57,6 @@ export default function MyOrders() {
     if (loading) {
         return (
             <>
-                <Header />
                 <div className="max-w-4xl mx-auto p-6 text-center">Loading orders...</div>
             </>
         );
@@ -67,7 +65,6 @@ export default function MyOrders() {
     if (orders.length === 0) {
         return (
             <>
-                <Header />
                 <div className="max-w-4xl mx-auto p-6 text-center">
                     <h2 className="text-2xl font-semibold mb-4">No Orders Found</h2>
                     <p className="text-gray-600">You haven't placed any orders yet.</p>
@@ -84,9 +81,10 @@ export default function MyOrders() {
 
     return (
         <>
-            <Header />
-            <div className="max-w-5xl mx-auto p-6">
-                <h2 className="text-3xl font-bold mb-6">My Orders</h2>
+            <div className="max-w-6xl mx-auto p-4 pt-0 lg:p-1">
+                <h6 className="text-1xl font-bold text-gray-900 mb-6 tracking-tight">
+                    🛒 My Shopping Orders
+                </h6>
 
                 <div className="space-y-6">
                     {orders.map((order) => (
@@ -99,10 +97,10 @@ export default function MyOrders() {
                                 <h3 className="text-lg font-semibold">Order ID: {order.orderNumber}</h3>
                                 <span
                                     className={`px-2 py-1 rounded-full text-sm font-medium ${order.products?.[0]?.status?.toLowerCase() === "pending"
-                                            ? "bg-yellow-100 text-yellow-800"
-                                            : order.products?.[0]?.status?.toLowerCase() === "completed"
-                                                ? "bg-green-100 text-green-800"
-                                                : "bg-red-100 text-red-800"
+                                        ? "bg-yellow-100 text-yellow-800"
+                                        : order.products?.[0]?.status?.toLowerCase() === "completed"
+                                            ? "bg-green-100 text-green-800"
+                                            : "bg-red-100 text-red-800"
                                         }`}
                                 >
                                     {order.products?.[0]?.status?.toUpperCase() || "UNKNOWN"}
@@ -158,7 +156,7 @@ export default function MyOrders() {
                                                         },
                                                     })
                                                 }
-                                                className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm"
+                                                className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm cursor-pointer"
                                             >
                                                 View Details
                                             </button>

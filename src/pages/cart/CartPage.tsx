@@ -218,7 +218,6 @@ type CartItem = {
 
 type Cart = {
   items: CartItem[];
-  total: number;
 };
 
 export default function CartPage() {
@@ -236,11 +235,7 @@ export default function CartPage() {
       });
       const data = await res.json();
       if (res.ok) {
-        const total = data.items.reduce(
-          (sum: number, item: CartItem) => sum + item.price * item.quantity,
-          0
-        );
-        setCart({ ...data, total });
+        setCart(data);
       } else {
         alert(data.message || "Failed to load cart");
       }
@@ -267,11 +262,7 @@ export default function CartPage() {
         const updatedItems = cart.items.map((item) =>
           item.productId === productId ? { ...item, quantity } : item
         );
-        const total = updatedItems.reduce(
-          (sum, item) => sum + item.price * item.quantity,
-          0
-        );
-        setCart({ ...cart, items: updatedItems, total });
+        setCart({ ...cart, items: updatedItems });
       }
     } catch (err) {
       console.error(err);
@@ -295,11 +286,7 @@ export default function CartPage() {
         const updatedItems = cart.items.filter(
           (item) => item.productId !== productId
         );
-        const total = updatedItems.reduce(
-          (sum, item) => sum + item.price * item.quantity,
-          0
-        );
-        setCart({ ...cart, items: updatedItems, total });
+        setCart({ ...cart, items: updatedItems });
       }
     } catch (err) {
       console.error(err);
@@ -332,122 +319,151 @@ export default function CartPage() {
       </div>
     );
 
- return (
-  <div className="max-w-6xl mx-auto p-4 lg:p-6">
-    {/* Page Header */}
-    <h6 className="text-1xl font-bold text-gray-900 mb-6 tracking-tight">🛒 Your Shopping Cart</h6>
+  // 🧮 Calculations
+  const gstPercent = 18;
+  const discountPercent = 10;
+  const deliveryThreshold = 500;
+  const deliveryChargeFlat = 40;
 
-    <div className="flex flex-col lg:flex-row gap-6">
-      {/* Left: Cart Items */}
-      <div className="flex-1 space-y-4">
-        {cart.items.map((item) => (
-          <div
-            key={item.productId}
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 border rounded-lg shadow-sm bg-white transition hover:shadow-md"
-          >
-            {/* Product Image */}
-            <img
-              src={item.image || "/placeholder.svg"}
-              alt={item.name}
-              className="w-28 h-28 object-cover rounded border"
-            />
+  const itemCount = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+  const subtotal = cart.items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+  const discount = (subtotal * discountPercent) / 100;
+  const gst = ((subtotal - discount) * gstPercent) / 100;
+  const deliveryCharge =
+    subtotal - discount >= deliveryThreshold ? 0 : deliveryChargeFlat;
+  const total = subtotal - discount + gst + deliveryCharge;
 
-            {/* Product Info */}
-            <div className="flex-1 flex flex-col gap-1">
-              <h3 className="text-lg font-semibold text-gray-800">{item.name}</h3>
-              <p className="text-sm text-gray-500">Product ID: {item.productId}</p>
-              <p className="text-sm text-green-600">✅ In Stock</p>
-              <p className="text-sm text-gray-500">
-                Estimated Delivery:{" "}
-                <span className="font-medium text-gray-700">3-5 days</span>
-              </p>
-              <p className="text-sm text-gray-500">
-                Seller:{" "}
-                <span className="text-gray-700 font-medium">BestMart</span>
-              </p>
+  const showCheckoutButton = cart.items.length > 0;
 
-              {/* Quantity Controls */}
-              <div className="flex items-center gap-2 mt-3">
-                <button
-                  onClick={() => updateQuantity(item.productId, item.quantity - 1)}
-                  disabled={updatingItemId === item.productId}
-                  className="px-3 py-1 bg-gray-100 border rounded hover:bg-gray-200 disabled:opacity-50"
-                >
-                  {updatingItemId === item.productId ? "..." : "-"}
-                </button>
-                <input
-                  type="number"
-                  min={1}
-                  value={item.quantity}
-                  onChange={(e) =>
-                    updateQuantity(item.productId, Number(e.target.value))
-                  }
-                  className="w-14 text-center border rounded py-1"
-                />
-                <button
-                  onClick={() => updateQuantity(item.productId, item.quantity + 1)}
-                  disabled={updatingItemId === item.productId}
-                  className="px-3 py-1 bg-gray-100 border rounded hover:bg-gray-200 disabled:opacity-50"
-                >
-                  {updatingItemId === item.productId ? "..." : "+"}
-                </button>
+  return (
+    <div className="max-w-6xl mx-auto p-4 pt-0 lg:p-1">
+      <h6 className="text-1xl font-bold text-gray-900 mb-6 tracking-tight">
+        🛒 Your Shopping Cart
+      </h6>
 
-                <button
-                  onClick={() => removeItem(item.productId)}
-                  disabled={updatingItemId === item.productId}
-                  className="ml-auto text-red-500 hover:text-red-700 text-sm font-medium"
-                >
-                  {updatingItemId === item.productId ? "Removing..." : "Remove"}
-                </button>
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Left: Cart Items */}
+        <div className="flex-1 space-y-4">
+          {cart.items.map((item) => (
+            <div
+              key={item.productId}
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 border rounded-lg shadow-sm bg-white transition hover:shadow-md"
+            >
+              <img
+                src={item.image || "/placeholder.svg"}
+                alt={item.name}
+                className="w-28 h-28 object-fill rounded border flex-shrink-0"
+              />
+
+              <div className="flex-1 flex flex-col gap-1">
+                <h3 className="text-lg font-semibold text-gray-800">{item.name}</h3>
+                <p className="text-sm text-green-600">✅ In Stock</p>
+                <p className="text-sm text-gray-500">
+                  Estimated Delivery:{" "}
+                  <span className="font-medium text-gray-700">3-5 days</span>
+                </p>
+                <p className="text-sm text-gray-500">
+                  Seller:{" "}
+                  <span className="text-gray-700 font-medium">BestMart</span>
+                </p>
+                <div className="text-sm font-semibold text-gray-800 sm:text-start">
+                  ₹{item.price * item.quantity}
+                </div>
+
+                <div className="flex items-center gap-2 mt-3">
+                  <button
+                    onClick={() =>
+                      updateQuantity(item.productId, item.quantity - 1)
+                    }
+                    disabled={updatingItemId === item.productId}
+                    className="px-3 py-1 bg-gray-100 border rounded hover:bg-gray-200 cursor-pointer disabled:opacity-50"
+                  >
+                    {updatingItemId === item.productId ? "..." : "-"}
+                  </button>
+                  <input
+                    type="number"
+                    min={1}
+                    value={item.quantity}
+                    onChange={(e) =>
+                      updateQuantity(item.productId, Number(e.target.value))
+                    }
+                    className="w-10 text-center border rounded py-1"
+                  />
+                  <button
+                    onClick={() =>
+                      updateQuantity(item.productId, item.quantity + 1)
+                    }
+                    disabled={updatingItemId === item.productId}
+                    className="px-3 py-1 bg-gray-100 border rounded hover:bg-gray-200 cursor-pointer disabled:opacity-50"
+                  >
+                    {updatingItemId === item.productId ? "..." : "+"}
+                  </button>
+
+                  <button
+                    onClick={() => removeItem(item.productId)}
+                    disabled={updatingItemId === item.productId}
+                    className="ml-auto text-red-500 hover:text-red-700 text-sm font- cursor-pointer disabled:opacity-50"
+                  >
+                    {updatingItemId === item.productId
+                      ? "Removing..."
+                      : "Remove"}
+                  </button>
+                </div>
               </div>
             </div>
+          ))}
+        </div>
 
-            {/* Price */}
-            <div className="text-lg font-bold text-gray-800 sm:text-right">
-              ₹{item.price * item.quantity}
-            </div>
+        {/* Right: Order Summary Panel */}
+        <div className="lg:w-80 bg-white p-5 rounded-lg shadow sticky top-6 h-fit">
+          <h2 className="text-xl font-bold text-gray-900 mb-4">Order Summary</h2>
+
+          <div className="flex justify-between text-gray-600 text-sm mb-2">
+            <span>Items ({itemCount})</span>
+            <span>₹{subtotal.toFixed(2)}</span>
           </div>
-        ))}
-      </div>
 
-      {/* Right: Order Summary Panel */}
-      <div className="lg:w-80 bg-white p-5 rounded-lg shadow sticky top-6 h-fit">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Order Summary</h2>
+          <div className="flex justify-between text-gray-600 text-sm mb-2">
+            <span>Discount ({discountPercent}%)</span>
+            <span className="text-red-500">- ₹{discount.toFixed(2)}</span>
+          </div>
 
-        <div className="flex justify-between text-gray-600 text-sm mb-2">
-          <span>Items ({cart.items.length})</span>
-          <span>₹{cart.total}</span>
+          <div className="flex justify-between text-gray-600 text-sm mb-2">
+            <span>GST ({gstPercent}%)</span>
+            <span>₹{gst.toFixed(2)}</span>
+          </div>
+
+          <div className="flex justify-between text-gray-600 text-sm mb-4">
+            <span>Delivery Charges</span>
+            <span
+              className={deliveryCharge === 0 ? "text-green-600 font-medium" : ""}
+            >
+              {deliveryCharge === 0
+                ? "Free"
+                : `₹${deliveryCharge.toFixed(2)}`}
+            </span>
+          </div>
+
+          <hr />
+
+          <div className="flex justify-between font-semibold text-gray-800 text-base mt-4">
+            <span>Total</span>
+            <span>₹{total.toFixed(2)}</span>
+          </div>
+
+          {showCheckoutButton && (
+            <Link to="/checkout">
+              <button className="w-full mt-5 bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition font-semibold text-sm cursor-pointer">
+                <LoaderCircle className="inline-block mr-2 h-4 w-4 animate-spin" />
+                Proceed to Checkout
+              </button>
+            </Link>
+          )}
         </div>
-
-        {/* Hardcoded Delivery Charges Example */}
-        <div className="flex justify-between text-gray-600 text-sm mb-2">
-          <span>Delivery Charges</span>
-          <span className="text-green-600 font-medium">Free</span>
-        </div>
-
-        {/* Hardcoded Discount Example */}
-        <div className="flex justify-between text-gray-600 text-sm mb-4">
-          <span>Festival Discount</span>
-          <span className="text-red-500">- ₹100</span>
-        </div>
-
-        <hr />
-
-        <div className="flex justify-between font-semibold text-gray-800 text-base mt-4">
-          <span>Total</span>
-          <span>₹{cart.total - 100}</span>
-        </div>
-
-        <Link to="/checkout">
-          <button className="w-full mt-5 bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition font-semibold text-sm cursor-pointer">
-            <LoaderCircle className="inline-block mr-2 h-4 w-4 animate-spin" />
-            Proceed to Checkout
-          </button>
-        </Link>
       </div>
     </div>
-  </div>
-);
-
-
+  );
 }

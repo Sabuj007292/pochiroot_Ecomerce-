@@ -177,13 +177,13 @@
 //   );
 // }
 
-import { useState, useRef } from "react";
-import { motion } from "framer-motion";
-import { Loader2, Check } from "lucide-react";
+// import { useState, useRef } from "react";
+// import { motion } from "framer-motion";
+// import { Loader2, Check } from "lucide-react";
 
 export type Product = {
   id: string;
-  title: string;
+  productName: string;
   subtitle?: string;
   price: number;
   discountedPrice?: number;
@@ -194,14 +194,141 @@ export type Product = {
   imageHeight?: number;
 };
 
+// export function ProductCard({ product }: { product: Product }) {
+  // const { id, title, subtitle, price, discountedPrice, discount, imageAlt, imageUrl, imageWidth = 480, imageHeight = 320 } = product;
+//   const [loading, setLoading] = useState(false);
+//   const [added, setAdded] = useState(false);
+//   const hasClicked = useRef(false); // ✅ Prevent multiple clicks
+
+//   const handleAddToCart = async () => {
+//     if (hasClicked.current || added) return; // skip if already clicked
+//     hasClicked.current = true;
+
+//     try {
+//       setLoading(true);
+//       const token = localStorage.getItem("token");
+//       const response = await fetch("http://localhost:3000/api/users/cart/add", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${token}`,
+//         },
+//         body: JSON.stringify({
+//           productId: id,
+//           quantity: 1,
+//           name: title,
+//           subtitle,
+//           price,
+//           discountedPrice,
+//           discount,
+//           image: imageUrl,
+//         }),
+//       });
+
+//       const data = await response.json();
+//       setLoading(false);
+
+//       if (response.ok) {
+//         setAdded(true); // ✅ stays "Added!" permanently
+//         console.log("Cart response:", data.cart);
+//       } else {
+//         alert(`❌ Failed: ${data.message}`);
+//         hasClicked.current = false; // reset if failed
+//       }
+//     } catch (err) {
+//       console.error("Add to cart error:", err);
+//       setLoading(false);
+//       hasClicked.current = false; // reset on error
+//       alert("Something went wrong");
+//     }
+//   };
+
+//   return (
+//     <motion.div
+//       whileHover={{ scale: 1.02 }}
+//       whileTap={{ scale: 0.97 }}
+//       className="card overflow-hidden border rounded-md shadow-sm bg-white"
+//     >
+//       <div className="card-header p-0">
+//         <motion.img
+//           src={imageUrl || "/placeholder.svg"}
+//           alt={imageAlt}
+//           width={imageWidth}
+//           height={imageHeight}
+//           className="h-60 w-full object-cover"
+//           whileHover={{ scale: 1.05 }}
+//           transition={{ duration: 0.3 }}
+//         />
+//       </div>
+
+//       <div className="card-content p-4">
+//         <h3 className="text-sm font-medium text-gray-900">{title}</h3>
+//         <small className="text-xs text-gray-500">{subtitle}</small>
+
+//         <div className="text-sm text-gray-800 space-y-1">
+//           <div className="text-xl font-semibold text-gray-900">
+//             ₹{discountedPrice}
+//             {discount && <span className="ml-2 text-green-600 font-medium text-sm">{discount}% OFF</span>}
+//           </div>
+//           <div className="text-gray-500 text-sm">
+//             MRP: <span className="line-through">₹{price}</span>
+//           </div>
+//           <div className="text-xs text-gray-400">(Incl. of all taxes)</div>
+//         </div>
+//       </div>
+
+//       <div className="card-footer flex items-center gap-2 p-4 pt-0">
+//         <motion.button
+//           onClick={handleAddToCart}
+//           disabled={loading || added}
+//           whileTap={{ scale: 0.95 }}
+//           className={`mt-4 w-full flex items-center justify-center gap-2 font-semibold py-2 rounded-lg transition-colors duration-200
+//             ${loading ? "bg-gray-400 text-white" : added ? "bg-green-600 text-white" : "bg-blue-600 text-white hover:bg-blue-700"}`}
+//         >
+//           {loading ? (
+//             <>
+//               <Loader2 className="animate-spin h-5 w-5" />
+//               Adding...
+//             </>
+//           ) : added ? (
+//             <>
+//               <Check className="h-5 w-5 text-white" />
+//               Added!
+//             </>
+//           ) : (
+//             "Add to cart"
+//           )}
+//         </motion.button>
+//       </div>
+//     </motion.div>
+//   );
+// }
+
+
+import { useState, useRef } from "react";
+import { motion } from "framer-motion";
+import { Loader2, Check } from "lucide-react";
+
 export function ProductCard({ product }: { product: Product }) {
-  const { id, title, subtitle, price, discountedPrice, discount, imageAlt, imageUrl, imageWidth = 480, imageHeight = 320 } = product;
+  const {
+    id,
+    productName,
+    subtitle,
+    price,
+    discountedPrice,
+    discount,
+    imageAlt,
+    imageUrl,
+    // imageWidth = 480,
+    // imageHeight = 320,
+  } = product;
+
   const [loading, setLoading] = useState(false);
   const [added, setAdded] = useState(false);
-  const hasClicked = useRef(false); // ✅ Prevent multiple clicks
+  const hasClicked = useRef(false);
 
   const handleAddToCart = async () => {
-    if (hasClicked.current || added) return; // skip if already clicked
+    if (hasClicked.current || added) return;
     hasClicked.current = true;
 
     try {
@@ -216,7 +343,7 @@ export function ProductCard({ product }: { product: Product }) {
         body: JSON.stringify({
           productId: id,
           quantity: 1,
-          name: title,
+          name: productName,
           subtitle,
           price,
           discountedPrice,
@@ -229,16 +356,16 @@ export function ProductCard({ product }: { product: Product }) {
       setLoading(false);
 
       if (response.ok) {
-        setAdded(true); // ✅ stays "Added!" permanently
+        setAdded(true);
         console.log("Cart response:", data.cart);
       } else {
         alert(`❌ Failed: ${data.message}`);
-        hasClicked.current = false; // reset if failed
+        hasClicked.current = false;
       }
     } catch (err) {
       console.error("Add to cart error:", err);
       setLoading(false);
-      hasClicked.current = false; // reset on error
+      hasClicked.current = false;
       alert("Something went wrong");
     }
   };
@@ -247,58 +374,64 @@ export function ProductCard({ product }: { product: Product }) {
     <motion.div
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.97 }}
-      className="card overflow-hidden border rounded-md shadow-sm bg-white"
+      className="group border rounded-md bg-white shadow-sm overflow-hidden flex flex-col transition-all duration-300"
     >
-      <div className="card-header p-0">
-        <motion.img
+      {/* Image */}
+      <div className="relative overflow-hidden aspect-[4/3]">
+        <img
           src={imageUrl || "/placeholder.svg"}
           alt={imageAlt}
-          width={imageWidth}
-          height={imageHeight}
-          className="h-60 w-full object-cover"
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.3 }}
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
       </div>
 
-      <div className="card-content p-4">
-        <h3 className="text-sm font-medium text-gray-900">{title}</h3>
-        <small className="text-xs text-gray-500">{subtitle}</small>
+      {/* Product Info */}
+      <div className="flex flex-col flex-grow p-4 space-y-2">
+        <h3 className="text-base font-semibold text-gray-900 truncate">{productName}</h3>
+        {subtitle && <p className="text-sm text-gray-500 truncate">{subtitle}</p>}
 
-        <div className="text-sm text-gray-800 space-y-1">
-          <div className="text-xl font-semibold text-gray-900">
-            ₹{discountedPrice}
-            {discount && <span className="ml-2 text-green-600 font-medium text-sm">{discount}% OFF</span>}
+        {/* Pricing */}
+        <div className="mt-2 space-y-1">
+          <div className="flex items-center gap-2">
+            <span className="text-lg font-bold text-gray-900">₹{discountedPrice}</span>
+            {discount && (
+              <span className="text-sm text-green-600 font-medium">{discount}% OFF</span>
+            )}
           </div>
-          <div className="text-gray-500 text-sm">
-            MRP: <span className="line-through">₹{price}</span>
+          <div className="text-sm text-gray-500">
+            <span className="line-through">₹{price}</span>
           </div>
           <div className="text-xs text-gray-400">(Incl. of all taxes)</div>
         </div>
-      </div>
 
-      <div className="card-footer flex items-center gap-2 p-4 pt-0">
-        <motion.button
-          onClick={handleAddToCart}
-          disabled={loading || added}
-          whileTap={{ scale: 0.95 }}
-          className={`mt-4 w-full flex items-center justify-center gap-2 font-semibold py-2 rounded-lg transition-colors duration-200
-            ${loading ? "bg-gray-400 text-white" : added ? "bg-green-600 text-white" : "bg-blue-600 text-white hover:bg-blue-700"}`}
-        >
-          {loading ? (
-            <>
-              <Loader2 className="animate-spin h-5 w-5" />
-              Adding...
-            </>
-          ) : added ? (
-            <>
-              <Check className="h-5 w-5 text-white" />
-              Added!
-            </>
-          ) : (
-            "Add to cart"
-          )}
-        </motion.button>
+        {/* Button */}
+        <div className="mt-auto pt-2">
+          <motion.button
+            onClick={handleAddToCart}
+            disabled={loading || added}
+            whileTap={{ scale: 0.95 }}
+            className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-md text-sm font-medium transition-colors duration-200
+              ${loading
+                ? "bg-gray-400 text-white"
+                : added
+                ? "bg-green-600 text-white"
+                : "bg-blue-600 text-white hover:bg-blue-700"}`}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="animate-spin h-5 w-5" />
+                Adding...
+              </>
+            ) : added ? (
+              <>
+                <Check className="h-5 w-5 text-white" />
+                Added!
+              </>
+            ) : (
+              "Add to cart"
+            )}
+          </motion.button>
+        </div>
       </div>
     </motion.div>
   );

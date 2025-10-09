@@ -30,7 +30,7 @@ const SidebarFilters: React.FC<{ onReset?: () => void }> = ({ onReset }) => {
   };
 
   return (
-    <aside className="w-full md:w-64 shrink-0 rounded-md border bg-white p-4 shadow-sm">
+    <aside className="w-full md:w-70 shrink-0 rounded-md border bg-white p-4 shadow-sm">
       <div className="mb-2">
         <h2 className="text-sm font-semibold text-gray-900">Filters</h2>
         <p className="text-xs text-gray-500">Refine your results</p>
