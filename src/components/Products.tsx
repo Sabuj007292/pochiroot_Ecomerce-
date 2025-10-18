@@ -47,11 +47,11 @@ export default function ProductsPage() {
         const res = await axios.get("http://localhost:3000/api/admin/products/all");
         const productsData: Product[] = res.data.products.map((p: any) => ({
           id: p.productId,
-          title: p.productName,
-          subtitle: p.subtitle || "",
-          price: p.price,
-          discountedPrice: p.discountedPrice || "",
-          discount: p.discount || 0,
+          productName: p.productName,
+          brand: p.brand || "",
+          salePrice: p.salePrice,
+          discountPrice: p.discountPrice || "",
+          regularPrice: p.regularPrice || 0,
           imageAlt: p.name,
           imageUrl: p.productImages[0] || "", // first image from backend
         }));

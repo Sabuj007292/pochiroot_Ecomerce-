@@ -79,11 +79,12 @@ function App() {
               </MasterLayout>
             } />
             {/* <Route path="product-details" element={<ProductDetails />} /> */}
-            <Route path="/product-details" element={
+            <Route path="/product/:id" element={<ProductDetails />} />
+            {/* <Route path="/product-details" element={
               <MasterLayout>
                 <ProductDetails />
               </MasterLayout>
-            } />
+            } /> */}
 
           </Routes>
         </Router>
